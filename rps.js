@@ -10,18 +10,7 @@ function getComputerChoice() {
     }
 }
 
-function getPlayerChoice() {
-    let playerInput = prompt("What will you play? Rock, Paper or Scissors? ").toLowerCase();
-    if (playerInput === "rock" || playerInput === "paper" || playerInput === "scissors") {
-        return (playerInput.slice(0,1)).toUpperCase() + playerInput.slice(1);
-    } else {
-        console.log("Player input something incorrect, defaulting to Rock.");
-        return "Rock";
-    }
-}
-
-function playRound() {
-    let playerSelection = getPlayerChoice();
+function playRound(playerSelection) {
     let computerSelection = getComputerChoice();
     if (playerSelection === computerSelection) {
         return "It's a tie!";
@@ -53,43 +42,53 @@ function playRound() {
     
 }
 
-function game() {
-    playerScore = 0;
-    computerScore = 0;
-    let roundResult;
-    roundResult = playRound();
-    console.log(roundResult);
-    roundResult = playRound();
-    console.log(roundResult);
-    roundResult = playRound();
-    console.log(roundResult);
-    roundResult = playRound();
-    console.log(roundResult);
-    roundResult = playRound();
-    console.log(roundResult);
-
-    if (playerScore === computerScore) {
-        console.log(`It's a tie! Player and Computer both had a score of ${playerScore}.`);
-    } else if (playerScore > computerScore) {
-        console.log(`${playerScore} - ${computerScore}. Player wins!`);
-    } else {
-        console.log(`${playerScore} - ${computerScore}. Computer wins!`);
-    }
+function updateScore() {
+    matchScore.textContent = `${playerScore} - ${computerScore}`;
 }
 
-let playerScore;
-let ComputerScore;
+function checkWin() {
+    if (playerScore === 5) {
+        matchResult.textContent = "Congratulations! You win!";
+        playerScore = 0;
+        computerScore = 0;
+    } else if (computerScore === 5) {
+        matchResult.textContent = "Sorry, computer won!";
+        playerScore = 0;
+        computerScore = 0;
+    } else {
+        matchResult.textContent = "First to 5 wins!";
+    };
+}
+
+let playerScore = 0;
+let computerScore = 0;
+let playerSelection;
+
+const div = document.querySelector('div');
+const roundResult = document.querySelector('#round-result');
+const matchScore = document.querySelector('#match-score');
+const matchResult = document.querySelector('#match-result');
+
+const btnRock = document.querySelector('#rock');
+const btnPaper = document.querySelector('#paper');
+const btnScissors = document.querySelector('#scissors');
+
+btnRock.addEventListener('click', () => {
+    roundResult.textContent = playRound('Rock');
+    updateScore();
+    checkWin();
+});
+
+btnPaper.addEventListener('click', () => {
+    roundResult.textContent = playRound('Paper');
+    updateScore();
+    checkWin();
+});
+
+btnScissors.addEventListener('click', () => {
+    roundResult.textContent = playRound('Scissors');
+    updateScore();
+    checkWin();
+});
 
 
-// getComputerChoice() randomly returns "Rock", "Paper" or "Scissors"
-
-// getPlayerChoice() use prompt to get input from user
-
-// a function that plays a single round of RPS, with two parameters:
-// playerSelection and computerSelection
-// returns a string that declares the result of the round
-// should be case insensitive
-
-// another function called game() to play a 5 round game
-// keeps score and reports a winner at the end of the game
-// use console.log to display the results of each round
